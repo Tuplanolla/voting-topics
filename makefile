@@ -15,3 +15,7 @@ build:
 	sed -n 's|$(match)|$(set)|p' topics.dot > topics.csetx
 	sed -n 's|$(match)|$(bag)|p' topics.dot > topics.cbagx
 	$(CPP) $(CPPFLAGS) -otopics.php topics.template
+
+clean:
+	$(RM) void.png topics.svg topics.cmapx topics.csetx topics.cbagx topics.php
+	$(RM) topics.data

@@ -2,11 +2,11 @@ DOT=dot
 DOTFLAGS=-Gfontname=sans -Nfontname=sans -Gfontsize=12 -Nfontsize=10
 CPP=gcc
 CPPFLAGS=-C -E -P -nostdinc -w -xc
-match=^\(\s*\)\(\w\+\)\(\s*\)$$
-svg=\1\2\3 [id="\2"]
-map=\1\2\3 [URL="javascript:void(0);" id="\2"]
-set=<input name="\2" type="checkbox" value="checked" />
-bag=$$GLOBALS["topics"]["\2"] = false;
+match=^\s*\(\w\+\)\s*\[\s*label\s*=\s*"\(.*\)"\s*\]$$
+svg=\1 [id="\1", label="{ ?? \| \2 }", shape=record]
+map=\1 [URL="javascript:void(0);", id="\1", label="{ ?? \| \2 }", shape=record]
+set=<input name="\1" type="checkbox" value="checked" />
+bag=array_push($$GLOBALS["topics"], "\1");
 
 build:
 	echo iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII= | base64 --decode > void.png

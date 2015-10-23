@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type" />
+<title>Topics</title>
+</head>
+<script type="text/javascript">
+<?php
+$GLOBALS["filename"] = "topics.data";
+$GLOBALS["topics"] = array();
+#include "topics.cbagx"
+$GLOBALS["username"] = "";
+
+function save($username, $data) {
+  if (strchr($username, ' ') !== FALSE ||
+      strchr($username, '\n') !== FALSE)
+    return FALSE;
+  $f = fopen($GLOBALS["filename"], "a");
+  if ($f === FALSE)
+    return FALSE;
+  if (fprintf($f, "%d %s %s", time(), $_SERVER["REMOTE_ADDR"], $username) < 0) {
+    fclose($f);
+    return FALSE;
+  }
+  foreach ($GLOBALS["topics"] as $t => $q)
+    if (isset($data[$t]) && $data[$t] === "checked")
+      if (fprintf($f, " %s", $t) < 0) {
+        fclose($f);
+        return FALSE;
+      }
+  if (fprintf($f, "\n") < 0) {
+    fclose($f);
+    return FALSE;
+  }
+  return fclose($f);
+}
+
+function load($username) {
+  $f = fopen($GLOBALS["filename"], "r");
+  if ($f === FALSE)
+    return FALSE;
+  $es = array();
+  while (!!($b = fgets($f, 4096))) {
+    list($t, $a, $s, $e) = explode(" ", $b . " ", 4);
+    $u = trim($s);
+    if ($u === $username) {
+      $GLOBALS["username"] = $u;
+      $es = explode(" ", trim($e));
+    }
+  }
+  foreach ($es as $e) {
+    $t = trim($e);
+    if (isset($GLOBALS["topics"][$t]))
+      $GLOBALS["topics"][$t] = TRUE;
+  }
+  if (feof($f) === FALSE) {
+    fclose($f);
+    return FALSE;
+  }
+  return fclose($f);
+}
+?>
+
+window.onload = function () {
+<?php
+if (isset($_POST["username"])) {
+  $u = $_POST["username"];
+
+  if (isset($_POST["save"])) {
+    if (save($u, $_POST) === FALSE)
+      printf("  window.alert(\"Saving topics failed.\");\n");
+  }
+
+  printf("  var topics = null;\n");
+  if (isset($_POST["load"]) || isset($_POST["save"])) {
+    if (load($u) === FALSE)
+      printf("  window.alert(\"Loading topics failed.\");\n");
+    printf("  topics = {};\n");
+    foreach ($GLOBALS["topics"] as $t => $q)
+      printf("  topics[\"%s\"] = %s;\n", $t, $q ? "true" : "false");
+  }
+}
+printf("  var username = \"" . $GLOBALS["username"] . "\";\n");
+?>
+
+  var n = "#400000";
+  var y = "#0000ff";
+  var as = document.getElementsByTagName("area");
+  var d = document.getElementById("svg").getSVGDocument();
+  var g = d.getElementsByTagName("svg")[0];
+  var v = document.getElementById("void");
+  v.style.width = g.getAttribute("width");
+  v.style.height = g.getAttribute("height");
+  for (var i = 0; i < as.length; ++i)
+    (function (a) {
+      var cs = document.getElementsByName(a.id);
+      var ps = d.getElementById(a.id).getElementsByTagName("polygon");
+      var q = topics[a.id];
+      for (var j = 0; j < cs.length; ++j)
+        (function (c) {
+          if (c.type === "checkbox") {
+            a.addEventListener("refill", function () {
+              for (var k = 0; k < ps.length; ++k)
+                (function (p) {
+                  p.setAttribute("fill", c.checked ? y : n);
+                })(ps[k]);
+            });
+            var e = document.createEvent("Event");
+            e.initEvent("refill", true, true);
+            a.addEventListener("click", function () {
+              c.checked = !c.checked;
+              a.dispatchEvent(e);
+            });
+            if (topics !== null)
+              c.checked = q;
+            a.dispatchEvent(e);
+          }
+        })(cs[j]);
+    })(as[i]);
+  var us = document.getElementsByName("username");
+  for (var i = 0; i < us.length; ++i)
+    (function (u) {
+      u.value = username;
+    })(us[i]);
+};
+</script>
+<body style="background-color: black; color: white;">
+<h1>Topics</h1>
+Use this toy to vote on the topics you would like to study.
+However note that there is no guarantee of security or data integrity,
+meaning that your votes will be treated with reckless abandon.
+<form action="" method="post">
+<div style="display: none; z-index: 0;">
+#include "topics.csetx"
+</div>
+<h2>JyU Username</h2>
+<button type="submit" name="load" value="pushed">Load</button>
+<input type="text" name="username" value="" />
+<button type="submit" name="save" value="pushed">Save</button>
+</form>
+<h2>Potential Topics</h2>
+<div style="position: relative;">
+<object data="topics.svg" id="svg" style="left: 0; position: absolute; top: 0; z-index: 1;" type="image/svg+xml">
+SVG Object
+</object>
+#include "topics.cmapx"
+<img alt="PNG Object" id="void" src="void.png" style="background-color: transparent !important; left: 0; position: absolute; top: 0; z-index: 2;" usemap="#topics" />
+</div>
+</body>
+</html>

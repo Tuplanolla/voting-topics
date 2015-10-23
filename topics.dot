@@ -1,0 +1,192 @@
+digraph topics {
+  graph [bgcolor=black, color=white, fontcolor=white]
+  node [bgcolor=black, color=white, fontcolor=white]
+  edge [bgcolor=black, color=white, fontcolor=white]
+
+  node [shape=box]
+
+  rankdir=LR
+
+  subgraph cluster_topical {
+    label="Staying on Topic"
+
+    lc
+    [label="What is lambda calculus?
+Constructing a minimal programming language."]
+
+    monoids
+    [label="What are monoids?
+Understanding and using `Data.Monoid`."]
+
+    functors
+    [label="What are functors?
+Understanding and using `Data.Functor` and friends."]
+
+    applicatives
+    [label="What are applicative functors?
+Understanding and using `Control.Applicative` and friends."]
+
+    monads
+    [label="What are monads?
+Understanding and using `Control.Monad` and friends."]
+
+    traversals
+    [label="What are traversals?
+Understanding and using `Data.Foldable` and `Data.Traversable`."]
+
+    arrows
+    [label="What are arrows?
+Understanding and using `Control.Arrow`."]
+  }
+
+  subgraph cluster_design {
+    label="Program Design"
+
+    plan
+    [label="Where to start?
+Musings about types in planning and refactoring."]
+
+    flow
+    [label="How to express things better?
+Focusing on data flow instead of control flow."]
+
+    parsec
+    [label="How to parse things?
+Looking at `Text.Parsec` or its descendants."]
+
+    repa
+    [label="How to crunch numbers?
+Looking at `Data.Array.Repa` and `Data.Array.Accelerate`."]
+
+    concurrent
+    [label="How to manage threads?
+Working with concurrent control flow abstractions."]
+
+    work
+    [label="What is the fabled great good?
+Looking at practical applications and future work."]
+  }
+
+  subgraph cluster_tricks {
+    label="Type System Tricks"
+
+    mt
+    [label="What are monad transformers?
+Looking at a seemingly scary subject."]
+
+    comp
+    [label="How to compose functions?
+Building ridiculous chains without a variable in sight."]
+
+    printf
+    [label="How to define functions with variable arity?
+Looking at printf from `Text.Printf`."]
+
+    schemes
+    [label="What are recursion schemes?
+Abstracting away the little control flow that is left."]
+
+    extensions
+    [label="Is there more to the type system?
+Using language extensions to enhance the type system."]
+  }
+
+  subgraph cluster_theory {
+    label="Type Theory"
+
+    stlc
+    [label="How about typed lambda calculus?
+Fitting simple types into a simple theory."]
+
+    cardinal
+    [label="Why calculate type inhabitants?
+Putting cardinal space into good use."]
+
+    dependent
+    [label="Is there more to types?
+Thinking about linear and dependent types."]
+
+    proofs
+    [label="How to prove and check theorems?
+Taking a gander at Coq and Idris."]
+
+    foundations
+    [label="What does it mean to exist?
+Pondering about axiomatic systems and mathematical foundations."]
+  }
+
+  subgraph cluster_implementation {
+    label="Implementation Details"
+
+    classes
+    [label="What are type classes?
+Implementing type classes without type classes."]
+
+    io
+    [label="How does IO actually work?
+Uncovering the magic of side effects."]
+
+    prim
+    [label="What happens under the hood?
+Bringing out `MagicHash`, `GHC.Exts` and `GHC.Prim`."]
+  }
+
+  subgraph cluster_performance {
+    label="Performance and Profiling"
+
+    mutable
+    [label="How to transform mutable data?
+Using `Control.Monad.ST` and `Data.IORef`."]
+
+    habits
+    [label="How to write fast code?
+Developing good habits."]
+
+    seq
+    [label="How to control laziness?
+Using `seq` and `BangPatterns`."]
+
+    parallel
+    [label="How to employ multiple cores?
+Working with parallel algorithms."]
+
+    prof
+    [label="How to find and eliminate performance problems?
+Producing wrong results faster."]
+  }
+
+  subgraph cluster_automation {
+    label="Tools for Automation"
+
+    ghc
+    [label="How to improve the user experience?
+Configuring and using ghc and ghci."]
+
+    cabal
+    [label="How to manage projects?
+Using modules and Cabal."]
+
+    pointfree
+    [label="How to work with composition chains?
+Making use of pointfree and pointful."]
+
+    djinn
+    [label="How to avoid writing code?
+Trying out djinn and typed holes."]
+  }
+
+  functors -> applicatives
+  monads -> arrows
+  monads -> mt
+  monads -> io
+  lc -> stlc
+  seq -> prof
+  concurrent -> parallel
+  applicatives -> parsec
+  flow -> repa
+  parallel -> repa
+  dependent -> proofs
+  comp -> pointfree
+  proofs -> foundations
+  foundations -> proofs
+}

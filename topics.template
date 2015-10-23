@@ -115,10 +115,10 @@ function script($filepath) {
     printf("var username = \"\";\n");
 
   if (isset($_POST["save"]))
-    if (save($fp, $_POST) === FALSE)
+    if (save($filepath, $_POST) === FALSE)
       printf("window.alert(\"Saving failed!\");\n");
 
-  $es = load($fp);
+  $es = load($filepath);
   if ($es === FALSE) {
     printf("window.alert(\"Loading failed!\");\n");
     return FALSE;

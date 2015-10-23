@@ -148,29 +148,43 @@ window.onload = function () {
 script("topics.data");
 ?>
 
-  var n = "#300000";
-  var y = "#306030";
-  var as = document.getElementsByTagName("area");
+  var us = document.getElementsByName("username");
+  for (var i = 0; i < us.length; ++i)
+    (function (u) {
+      u.value = username;
+    })(us[i]);
+
   var d = document.getElementById("svg").getSVGDocument();
-  var g = d.getElementsByTagName("svg")[0];
+  var r = d.getElementsByTagName("svg")[0];
+
   var v = document.getElementById("void");
-  v.style.width = g.getAttribute("width");
-  v.style.height = g.getAttribute("height");
+  v.style.width = r.getAttribute("width");
+  v.style.height = r.getAttribute("height");
+
+  var as = document.getElementsByTagName("area");
   for (var i = 0; i < as.length; ++i)
     (function (a) {
-      var cs = document.getElementsByName(a.id);
+      var s = selections !== null ? selections[a.id] : null;
+
       var g = d.getElementById(a.id);
       var ps = g.getElementsByTagName("polygon");
+
       var t = g.getElementsByTagName("text")[0];
-      var s = selections !== null ? selections[a.id] : null;
       t.innerHTML = totals[a.id].toString();
+
+      var cs = document.getElementsByName(a.id);
       for (var j = 0; j < cs.length; ++j)
         (function (c) {
           if (c.type === "checkbox") {
+            if (s !== null)
+              c.checked = s;
+
             a.addEventListener("refill", function () {
               for (var k = 0; k < ps.length; ++k)
                 (function (p) {
-                  p.setAttribute("fill", c.checked ? y : n);
+                  p.setAttribute("fill", c.checked ? "#306030" : "#300000");
+
+                  /* This is extra fluff. */
                   if (p.getAttribute("class") !== "clone") {
                     if (c.checked) {
                       var q = p.cloneNode(true);
@@ -183,29 +197,25 @@ script("topics.data");
                   }
                 })(ps[k]);
             });
+
             var e = document.createEvent("Event");
             e.initEvent("refill", true, true);
+
             a.addEventListener("click", function () {
               c.checked = !c.checked;
               a.dispatchEvent(e);
             });
-            if (s !== null)
-              c.checked = s;
+
             a.dispatchEvent(e);
           }
         })(cs[j]);
     })(as[i]);
-  var us = document.getElementsByName("username");
-  for (var i = 0; i < us.length; ++i)
-    (function (u) {
-      u.value = username;
-    })(us[i]);
 };
 </script>
 <body style="background-color: black; color: white; font-family: sans-serif; margin: 2ex;">
 <h1>Topics</h1>
 Use this toy to vote on the topics you would like to study.
-However note that there is no guarantee of security or data integrity,
+However note that there is no guarantee of privacy or data integrity,
 meaning that your votes will be treated with reckless abandon.
 <form action="" method="post">
 <div style="display: none; z-index: 0;">

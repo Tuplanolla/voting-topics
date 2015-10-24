@@ -15,14 +15,14 @@ ini_set("display_startup_errors", 1);
 $GLOBALS["topics"] = Array();
 #include "topics.cbagx"
 
-function save($filepath, $data) {
-  if (isset($data["username"]) === FALSE)
-    return FALSE;
-  $u = trim($data["username"]);
-
-  if (preg_match("/[^\s]+/", $u) === FALSE)
+function check($username) {
+  if (preg_match("/^[^\\s\\0\\\\\"]+\$/", $username) === FALSE)
     return FALSE;
 
+  return TRUE;
+}
+
+function save($filepath, $username, $data) {
   $f = fopen($filepath, "a");
   if ($f === FALSE)
     return FALSE;
@@ -59,7 +59,7 @@ function load($filepath) {
 
   $es = Array();
   while (($b = fgets($f)) !== FALSE) {
-    $xs = preg_split("/\s+/", $b, NULL, PREG_SPLIT_NO_EMPTY);
+    $xs = preg_split("/\\s+/", $b, NULL, PREG_SPLIT_NO_EMPTY);
 
     $t = array_shift($xs);
     if ($t === NULL) {
@@ -108,36 +108,44 @@ function tally($entries) {
   return $ns;
 }
 
-function script($filepath) {
-  if (isset($_POST["username"]))
-    printf("var username = \"" . $_POST["username"] . "\";\n");
-  else
-    printf("var username = \"\";\n");
+function identify($data) {
+  if (isset($data["username"]) === FALSE)
+    return FALSE;
 
-  if (isset($_POST["save"]))
-    if (save($filepath, $_POST) === FALSE)
+  $u = trim($data["username"]);
+  if (check($u) === FALSE)
+    return FALSE;
+
+  return $u;
+}
+
+function script($filepath) {
+  printf("var username = \"\";\n");
+  printf("var selections = null;\n");
+  printf("var totals = {};\n");
+
+  $u = identify($_POST);
+  if ($u !== FALSE)
+    printf("username = \"" . $u . "\";\n");
+
+  if ($u !== FALSE && isset($_POST["save"]))
+    if (save($filepath, $u, $_POST) === FALSE)
       printf("window.alert(\"Saving failed!\");\n");
 
   $es = load($filepath);
-  if ($es === FALSE) {
+  if ($es === FALSE)
     printf("window.alert(\"Loading failed!\");\n");
-    return FALSE;
-  }
 
-  if (isset($_POST["username"])) {
-    $u = $_POST["username"];
-
-    printf("var selections = {};\n");
+  if ($u !== FALSE && (isset($_POST["save"]) || isset($_POST["load"]))) {
+    printf("selections = {};\n");
     if (isset($es[$u]))
       foreach ($GLOBALS["topics"] as $t) {
         $s = array_search($t, $es[$u]) !== FALSE;
         printf("selections[\"%s\"] = %s;\n", $t, $s ? "true" : "false");
       }
-  } else
-    printf("var selections = null;\n");
+  }
 
   $ns = tally($es);
-  printf("var totals = {};\n");
   foreach ($GLOBALS["topics"] as $t)
     printf("totals[\"%s\"] = %d;\n", $t, $ns[$t]);
 }

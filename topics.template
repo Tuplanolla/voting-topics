@@ -3,7 +3,7 @@
 <head>
 <meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type" />
 <title>Topics</title>
-</head>
+
 <script type="text/javascript">
 <?php
 #ifdef DEBUG
@@ -182,9 +182,9 @@ script("topics.data");
             a.addEventListener("refill", function () {
               for (var k = 0; k < ps.length; ++k)
                 (function (p) {
-                  p.setAttribute("fill", c.checked ? "#306030" : "#300000");
+                  p.setAttribute("fill", c.checked ? "#306030" : "#102010");
 
-                  /* This is extra fluff. */
+                  /* These special effects are unnecessary. */
                   if (p.getAttribute("class") !== "clone") {
                     if (c.checked) {
                       var q = p.cloneNode(true);
@@ -212,20 +212,34 @@ script("topics.data");
     })(as[i]);
 };
 </script>
+</head>
+
 <body style="background-color: black; color: white; font-family: sans-serif; margin: 2ex;">
 <h1>Topics</h1>
-Use this toy to vote on the topics you would like to study.
-However note that there is no guarantee of privacy or data integrity,
-meaning that your votes will be treated with reckless abandon.
+<p>Use this toy to vote on the topics you would like to study.</p>
+
+<p>Click on the nodes to select or unselect them.
+Once you are happy with your selection,
+enter your username and push <em>Save</em> to store it.
+If you want to edit your previous selection,
+you can either enter your username and push <em>Load</em> to fetch it or
+simply make a new one from scratch.
+All of your selections are kept, but only the latest one remains in effect.</p>
+
+<p>Note that there is no guarantee of privacy or data integrity,
+meaning that your votes will be treated with reckless abandon.</p>
+
 <form action="" method="post">
 <div style="display: none; z-index: 0;">
 #include "topics.csetx"
 </div>
+
 <h2>JyU Username</h2>
 <button type="submit" name="load" value="pushed">Load</button>
 <input type="text" name="username" value="" />
 <button type="submit" name="save" value="pushed">Save</button>
 </form>
+
 <h2>Potential Topics</h2>
 <div style="position: relative;">
 <object data="topics.svg" id="svg" style="left: 0; position: absolute; top: 0; z-index: 1;" type="image/svg+xml">

@@ -9,9 +9,13 @@ set=<input name="\1" type="checkbox" value="checked" />
 bag=array_push($$GLOBALS["topics"], "\1");
 
 build:
-	echo iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII= | base64 --decode > void.png
-	sed 's|$(match)|$(svg)|' topics.dot | $(DOT) $(DOTFLAGS) -Tsvg -otopics.svg
-	sed 's|$(match)|$(map)|' topics.dot | $(DOT) $(DOTFLAGS) -Tcmapx -otopics.cmapx
+	echo iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII= | \
+		base64 --decode > void.png
+	sed 's|$(match)|$(svg)|' topics.dot | \
+		$(DOT) $(DOTFLAGS) -Tsvg -otopics.svg
+	sed 's|$(match)|$(map)|' topics.dot | \
+		$(DOT) $(DOTFLAGS) -Tcmapx | \
+		sed 's|{.*}||' > topics.cmapx
 	sed -n 's|$(match)|$(set)|p' topics.dot > topics.csetx
 	sed -n 's|$(match)|$(bag)|p' topics.dot > topics.cbagx
 	$(CPP) $(CPPFLAGS) -otopics.php topics.template

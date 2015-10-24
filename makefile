@@ -4,7 +4,8 @@ CPP=gcc
 CPPFLAGS=-C -E -P -nostdinc -w -xc
 match=^\s*\(\w\+\)\s*\[\s*label\s*=\s*"\(.*\)"\s*\]$$
 svg=\1 [id="\1", label="{ ?? \| \2 }", shape=record]
-map=\1 [URL="javascript:void(0);", id="\1", label="{ ?? \| \2 }", shape=record]
+map=\1 [URL="javascript:void 0;", id="\1", label="{ ?? \| \2 }", shape=record]
+remove=title\s*=\s*"{.*}"
 set=<input name="\1" type="checkbox" value="checked" />
 bag=array_push($$GLOBALS["topics"], "\1");
 
@@ -15,7 +16,7 @@ build:
 		$(DOT) $(DOTFLAGS) -Tsvg -otopics.svg
 	sed 's|$(match)|$(map)|' topics.dot | \
 		$(DOT) $(DOTFLAGS) -Tcmapx | \
-		sed 's|{.*}||' > topics.cmapx
+		sed 's|$(remove)||' > topics.cmapx
 	sed -n 's|$(match)|$(set)|p' topics.dot > topics.csetx
 	sed -n 's|$(match)|$(bag)|p' topics.dot > topics.cbagx
 	$(CPP) $(CPPFLAGS) -otopics.php topics.template

@@ -15,15 +15,38 @@ ini_set("display_startup_errors", 1);
 $GLOBALS["topics"] = Array();
 #include "topics.cbagx"
 
-function check($username) {
+function check($username, $userfilepath = NULL) {
   if (preg_match("/^[^\\s\\0\\\\\"]+\$/", $username) !== 1)
     return FALSE;
 
-  return TRUE;
+  if ($userfilepath === NULL)
+    return TRUE;
+
+  $f = fopen($userfilepath, "r");
+  if ($f === FALSE)
+    return FALSE;
+
+  $c = FALSE;
+  while (($b = fgets($f)) !== FALSE) {
+    if (trim($b) === $username) {
+      $c = TRUE;
+      break;
+    }
+  }
+
+  if ($c === FALSE && feof($f) === FALSE) {
+    fclose($f);
+    return FALSE;
+  }
+
+  if (fclose($f) === FALSE)
+    return FALSE;
+
+  return $c;
 }
 
-function save($filepath, $username, $data) {
-  $f = fopen($filepath, "a");
+function save($datafilepath, $username, $data) {
+  $f = fopen($datafilepath, "a");
   if ($f === FALSE)
     return FALSE;
 
@@ -52,8 +75,8 @@ function save($filepath, $username, $data) {
   return TRUE;
 }
 
-function load($filepath) {
-  $f = fopen($filepath, "r");
+function load($datafilepath) {
+  $f = fopen($datafilepath, "r");
   if ($f === FALSE)
     return FALSE;
 
@@ -108,31 +131,31 @@ function tally($entries) {
   return $ns;
 }
 
-function identify($data) {
+function identify($data, $userfilepath = NULL) {
   if (isset($data["username"]) === FALSE)
     return FALSE;
 
   $u = trim($data["username"]);
-  if (check($u) === FALSE)
+  if (check($u, $userfilepath) === FALSE)
     return FALSE;
 
   return $u;
 }
 
-function script($filepath) {
+function script($datafilepath, $userfilepath = NULL) {
   printf("var username = \"\";\n");
   printf("var selections = null;\n");
   printf("var totals = {};\n");
 
-  $u = identify($_POST);
+  $u = identify($_POST, $userfilepath);
   if ($u !== FALSE)
     printf("username = \"" . $u . "\";\n");
 
-  if ($u !== FALSE && isset($_POST["save"]))
-    if (save($filepath, $u, $_POST) === FALSE)
+  if (isset($_POST["save"]))
+    if ($u === FALSE || save($datafilepath, $u, $_POST) === FALSE)
       printf("window.alert(\"Saving failed!\");\n");
 
-  $es = load($filepath);
+  $es = load($datafilepath);
   if ($es === FALSE)
     printf("window.alert(\"Loading failed!\");\n");
 
@@ -153,7 +176,7 @@ function script($filepath) {
 
 window.onload = function () {
 <?php
-script("topics.data");
+script("topics.data", "topics.users");
 ?>
 
   var us = document.getElementsByName("username");

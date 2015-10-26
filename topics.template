@@ -16,7 +16,7 @@ $GLOBALS["topics"] = Array();
 #include "topics.cbagx"
 
 function check($username) {
-  if (preg_match("/^[^\\s\\0\\\\\"]+\$/", $username) === FALSE)
+  if (preg_match("/^[^\\s\\0\\\\\"]+\$/", $username) !== 1)
     return FALSE;
 
   return TRUE;
@@ -27,7 +27,7 @@ function save($filepath, $username, $data) {
   if ($f === FALSE)
     return FALSE;
 
-  if (fprintf($f, "%d %s %s", time(), $_SERVER["REMOTE_ADDR"], $u) < 0) {
+  if (fprintf($f, "%d %s %s", time(), $_SERVER["REMOTE_ADDR"], $username) < 0) {
     fprintf($f, "\n");
     fclose($f);
     return FALSE;

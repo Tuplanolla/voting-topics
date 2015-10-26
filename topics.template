@@ -28,7 +28,7 @@ function check($username, $userfilepath = NULL) {
 
   $c = FALSE;
   while (($b = fgets($f)) !== FALSE) {
-    if (trim($b) === $username) {
+    if (rtrim($b) === $username) {
       $c = TRUE;
       break;
     }

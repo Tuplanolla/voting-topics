@@ -7,6 +7,47 @@ digraph topics {
   rankdir=LR
   node [shape=box]
 
+  subgraph cluster_automation {
+    label="Tools for Automation"
+    ghc [label="How to improve the user experience?\nConfiguring and using `ghc` and `ghci`."]
+    cabal [label="How to manage projects?\nUsing modules and `cabal`."]
+    pointfree [label="How to work with function composition?\nMaking use of `pointfree` and `pointful`."]
+    djinn [label="How to avoid writing code?\nTrying out `djinn`."]
+  }
+
+  subgraph cluster_cases {
+    label="Case Studies"
+    parsec [label="How to parse things?\nLooking at `Text.Parsec` or its descendants."]
+    repa [label="How to crunch numbers?\nLooking at `Data.Array.Repa` and `Data.Array.Accelerate`."]
+    servant [label="How to build web services?\nLooking at `Servant.API` or something."]
+  }
+
+  subgraph cluster_design {
+    label="Program Design"
+    plan [label="How to get things done?\nUsing types for planning and refactoring."]
+    concurrent [label="How to manage threads?\nWorking with concurrent control flow abstractions."]
+    flow [label="How to express things better?\nFocusing on data flow instead of control flow."]
+    work [label="What is the fabled great good?\nLooking at practical applications and future work."]
+  }
+
+  subgraph cluster_implementation {
+    label="Implementation Details"
+    classes [label="What are type classes?\nImplementing type classes without type classes."]
+    io [label="How does IO actually work?\nUncovering the magic of side effects."]
+    prim [label="What happens under the hood?\nBringing out `MagicHash`, `GHC.Exts` and `GHC.Prim`."]
+    core [label="How does GHC work?\nLooking at the compilation process."]
+    foreign [label="How to interact with other languages?\nUsing `Foreign` and `Data.Binary`."]
+  }
+
+  subgraph cluster_performance {
+    label="Performance and Profiling"
+    mutable [label="How to transform mutable data?\nUsing `Control.Monad.ST` and `Data.IORef`."]
+    habits [label="How to write fast code?\nDeveloping good habits."]
+    seq [label="How to control laziness?\nUsing `seq` and `BangPatterns`."]
+    parallel [label="How to employ multiple cores?\nWorking with parallel algorithms."]
+    prof [label="How to find and eliminate performance problems?\nProducing wrong results faster."]
+  }
+
   subgraph cluster_topical {
     label="Staying on Topic"
     lc
@@ -28,52 +69,13 @@ digraph topics {
     arrows [label="What are arrows?\nUnderstanding and using `Control.Arrow`."]
   }
 
-  subgraph cluster_cases {
-    label="Case Studies"
-    parsec [label="How to parse things?\nLooking at `Text.Parsec` or its descendants."]
-    repa [label="How to crunch numbers?\nLooking at `Data.Array.Repa` and `Data.Array.Accelerate`."]
-    servant [label="How to build web services?\nLooking at `Servant.API`."]
-  }
-
-  subgraph cluster_design {
-    label="Program Design"
-    plan [label="How to get things done?\nUsing types for planning and refactoring."]
-    flow [label="How to express things better?\nFocusing on data flow instead of control flow."]
-    concurrent [label="How to manage threads?\nWorking with concurrent control flow abstractions."]
-    work [label="What is the fabled great good?\nLooking at practical applications and future work."]
-  }
-
   subgraph cluster_tricks {
     label="Type System Tricks"
     composition [label="How to reason about function composition?\nMaking sense of expressions without a variable in sight."]
-    printf [label="How to define functions with variable arity?\nLooking at printf from `Text.Printf`."]
-    schemes [label="What are recursion schemes?\nAbstracting away control flow itself."]
     extensions [label="Is there more to the type system?\nUsing language extensions to enhance the type system."]
-  }
-
-  subgraph cluster_performance {
-    label="Performance and Profiling"
-    mutable [label="How to transform mutable data?\nUsing `Control.Monad.ST` and `Data.IORef`."]
-    habits [label="How to write fast code?\nDeveloping good habits."]
-    seq [label="How to control laziness?\nUsing `seq` and `BangPatterns`."]
-    parallel [label="How to employ multiple cores?\nWorking with parallel algorithms."]
-    prof [label="How to find and eliminate performance problems?\nProducing wrong results faster."]
-  }
-
-  subgraph cluster_automation {
-    label="Tools for Automation"
-    ghc [label="How to improve the user experience?\nConfiguring and using `ghc` and `ghci`."]
-    cabal [label="How to manage projects?\nUsing modules and `cabal`."]
-    pointfree [label="How to work with function composition?\nMaking use of pointfree and pointful."]
-    djinn [label="How to avoid writing code?\nTrying out `djinn`."]
-  }
-
-  subgraph cluster_implementation {
-    label="Implementation Details"
-    classes [label="What are type classes?\nImplementing type classes without type classes."]
-    io [label="How does IO actually work?\nUncovering the magic of side effects."]
-    core [label="How does GHC work?\nLooking at the compilation process."]
-    prim [label="What happens under the hood?\nBringing out `MagicHash`, `GHC.Exts` and `GHC.Prim`."]
+    printf [label="How to define functions with variable arity?\nLooking at `Text.Printf`."]
+    unsafe [label="What is considered unsafe?\nUsing `System.IO.Unsafe` correctly."]
+    schemes [label="What are recursion schemes?\nAbstracting away control flow itself."]
   }
 
   /*
@@ -87,7 +89,7 @@ digraph topics {
   */
 
   subgraph cluster_skills {
-    label="What Is Already Known"
+    label="Small Survey of Skills"
     hsm [label="I am comfortable with highschool mathematics."]
     fp [label="I have used more than one functional programming language."]
     c [label="I can read C programs."]
@@ -97,17 +99,19 @@ digraph topics {
   }
 
   lc -> stlc
-  concurrent -> parallel
+  stlc -> hm
   applicatives -> parsec
+  monads -> arrows
   monads -> io
   monads -> servant
   traversals -> flow
+  extensions -> ghc
+  concurrent -> parallel
+  concurrent -> repa
   flow -> repa
   habits -> prof
-  extensions -> ghc
   seq -> prof
+  composition -> pointfree
   prim -> prof
   prim -> core
-  concurrent -> repa
-  composition -> pointfree
 }

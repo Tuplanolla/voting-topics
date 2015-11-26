@@ -1,0 +1,7 @@
+<Files "topics.data">
+  Deny From All
+</Files>
+
+<Files "topics.users">
+  Deny From All
+</Files>

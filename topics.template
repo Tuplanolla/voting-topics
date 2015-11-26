@@ -258,7 +258,8 @@ simply make a new one from scratch.
 All of your selections are kept, but only the latest one remains in effect.</p>
 
 <p>Note that there is no guarantee of privacy or data integrity,
-meaning that your votes will be treated with reckless abandon.</p>
+meaning that your votes will be treated with reckless abandon.
+If this worries you, simply abstain from saving a selection.</p>
 
 <form action="" method="post">
 <div style="display: none; z-index: 0;">

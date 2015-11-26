@@ -12,7 +12,7 @@ digraph topics {
     ghc [label="How to improve the user experience?\nConfiguring and using `ghc` and `ghci`."]
     cabal [label="How to manage projects?\nUsing modules and `cabal`."]
     pointfree [label="How to work with function composition?\nMaking use of `pointfree` and `pointful`."]
-    djinn [label="How to avoid writing code?\nTrying out `djinn`."]
+    djinn [label="How to generate code from types?\nTrying out `djinn`."]
   }
 
   subgraph cluster_cases {
@@ -66,13 +66,15 @@ digraph topics {
     [label="What are free monads?\nUnderstanding and using `Control.Monad.Free`."]
     traversals [label="What are traversals?\nUnderstanding and using `Data.Foldable` and `Data.Traversable`."]
     monoids [label="What are monoids?\nUnderstanding and using `Data.Monoid`."]
-    arrows [label="What are arrows?\nUnderstanding and using `Control.Arrow`."]
+    lenses [label="What are lenses?\nUnderstanding and using `Control.Lens`."]
+    arrows [label="What are arrows?\nUnderstanding and using `Control.Arrow` and `Control.Category`."]
   }
 
   subgraph cluster_tricks {
     label="Type System Tricks"
     composition [label="How to reason about function composition?\nMaking sense of expressions without a variable in sight."]
     extensions [label="Is there more to the type system?\nUsing language extensions to enhance the type system."]
+    cont [label="How to add jumps into control flow?\nLooking at `Control.Monad.Cont`."]
     printf [label="How to define functions with variable arity?\nLooking at `Text.Printf`."]
     unsafe [label="What is considered unsafe?\nUsing `System.IO.Unsafe` correctly."]
     schemes [label="What are recursion schemes?\nAbstracting away control flow itself."]

@@ -1,119 +1,145 @@
 digraph topics {
-  graph [bgcolor=black, color=white, fontcolor=white]
-  node [bgcolor=black, color=white, fontcolor=white]
-  edge [bgcolor=black, color=white, fontcolor=white]
+  graph [bgcolor="#102010", color=white, fillcolor="#102010", fontcolor=white, style=filled]
+  node [color=white, fillcolor="#204020", fontcolor=white, style=filled]
+  node [fillcolor=black]
+  edge [color="#408040", fontcolor=white]
 
-  newrank=true
-  rankdir=LR
+  graph [compound=true, splines=ortho, rankdir=LR]
   node [shape=box]
+  edge []
 
-  subgraph cluster_automation {
-    label="Tools for Automation"
-    ghc [label="How to improve the user experience?\nConfiguring and using `ghc` and `ghci`."]
-    cabal [label="How to manage projects?\nUsing modules and `cabal`."]
-    pointfree [label="How to work with function composition?\nMaking use of `pointfree` and `pointful`."]
-    djinn [label="How to generate code from types?\nTrying out `djinn`."]
+  subgraph cluster_concepts {
+    label="Basic Concepts"
+    types
+    [label="What are polymorphic types?\nUnderstanding and using types."]
+    classes
+    [label="What are type classes?\nUnderstanding and using type classes."]
+    monoids
+    [label="What are monoids?\nUnderstanding and using monoids."]
+    functors
+    [label="What are functors?\nUnderstanding and using endofunctors and their variants."]
+    applicatives
+    [label="What are applicative functors?\nUnderstanding and using applicative functors."]
+    monads
+    [label="What are monads?\nUnderstanding and using monads."]
+    transformers
+    [label="What are monad transformers?\nUnderstanding and using monad transformers and classes."]
+    foldables
+    [label="What are iterators?\nUnderstanding and using foldables and traversables."]
+    free
+    [label="What are free monads?\nUnderstanding and using free monads."]
+    schemes
+    [label="What are recursion schemes?\nUnderstanding and using various recursion schemes."]
+    lenses [label="What are lenses?\nUnderstanding and using lenses and traversals."]
   }
 
-  subgraph cluster_cases {
-    label="Case Studies"
-    parsec [label="How to parse things?\nLooking at `Text.Parsec` or its descendants."]
-    repa [label="How to crunch numbers?\nLooking at `Data.Array.Repa` and `Data.Array.Accelerate`."]
-    servant [label="How to build web services?\nLooking at `Servant.API` or something."]
+  types -> classes
+  classes -> monoids
+  classes -> functors
+  monoids -> applicatives
+  functors -> applicatives
+  applicatives -> monads
+  monads -> transformers
+  applicatives -> foldables
+  monads -> free
+  foldables -> schemes
+  applicatives -> lenses
+
+  subgraph cluster_theory {
+    label="Type Theory and Category Theory"
+    algebra [label="What is the algebra of types?\nAdding, multiplying and exponentiating types."]
+    calculus [label="Is there a calculus of types?\nDifferentiating and taking the limits of types."]
+    inverted [label="Can types be inverted?\nTrying to interpret negative and reciprocal types."]
+    lc [label="What is the lambda calculus?\nConstructing a minimal programming language."]
+    stlc [label="What is the simply typed lambda calculus?\nAdding simple types to a simple programming language."]
+    plc [label="What is the polymorphic lambda calculus?\nAdding more complicated types to a simple programming language."]
+    decidable [label="What are the limits of decidable type inference?\nReviewing the Damas--Hindley--Milner type system."]
+    linear [label="What are linear types?\nExtending the type system to track the duplication and elimination of values."]
+    dependent [label="What are dependent types?\nExtending the type system to allow types to depend on values."]
+    foundations [label="Can type theory replace set theory?\nUsing type theory as a foundation of mathematics."]
+    correspondence [label="How is programming related to logic?\nExploring the Curry--Howard correspondence."]
+    deduction [label="How to write formal proofs?\nUsing natural deduction in practice."]
+    induction [label="How to reason about recursive types?\nDeriving induction principles for arbitrary types."]
+    totality [label="What are total languages?\nSolving a special case of the halting problem."]
+    erasure [label="How to perform type erasure?\nGetting rid of type information during compilation."]
+    categories [label="What is the point of category theory?\nGeneralizing types and functions to objects and morphisms."]
   }
+
+  types -> algebra [lhead=cluster_theory]
+  algebra -> calculus
+  algebra -> inverted
+  lc -> stlc
+  stlc -> plc
+  decidable -> linear
+  decidable -> dependent
+  dependent -> foundations
+  correspondence -> deduction
+  deduction -> induction
+  decidable -> erasure
+
+  subgraph cluster_application {
+    label="Applications"
+    parse [label="How to parse streams?\nLooking at `megaparsec` and `Earley`."]
+    arrays [label="How to work with arrays?\nLooking at `massiv` and `accelerate`."]
+    concurrency [label="How to manage concurrent computations?\nLooking at `async` and `stm`."]
+    web [label="How to build web services?\nLooking at `hakyll` and `servant`."]
+  }
+
+  monads -> parse [lhead=cluster_application]
 
   subgraph cluster_design {
-    label="Program Design"
-    plan [label="How to get things done?\nUsing types for planning and refactoring."]
-    concurrent [label="How to manage threads?\nWorking with concurrent control flow abstractions."]
-    flow [label="How to express things better?\nFocusing on data flow instead of control flow."]
-    work [label="What is the fabled great good?\nLooking at practical applications and future work."]
+    label="Planning and Design"
+    design [label="How to design programs?\nApplying design patterns to functional programming."]
+    organize [label="How to build large projects?\nOrganizing modules and packages."]
+    future [label="Are we done?\nDiscussing the current situation and future directions."]
   }
+
+  transformers -> design [lhead=cluster_design]
 
   subgraph cluster_implementation {
     label="Implementation Details"
-    classes [label="What are type classes?\nImplementing type classes without type classes."]
-    io [label="How does IO actually work?\nUncovering the magic of side effects."]
-    prim [label="What happens under the hood?\nBringing out `MagicHash`, `GHC.Exts` and `GHC.Prim`."]
-    core [label="How does GHC work?\nLooking at the compilation process."]
-    foreign [label="How to interact with other languages?\nUsing `Foreign` and `Data.Binary`."]
+    dictionaries [label="How are type classes created?\nImplementing type classes without type classes."]
+    effects [label="How do side effects actually work?\nUncovering the magic of input and output."]
+    primitives [label="How does the compiler work?\nLooking at the intermediate languages and their translation."]
+    foreign [label="How to interact with other languages?\nUsing the foreign function interface and binary serialization."]
   }
+
+  classes -> dictionaries [lhead=cluster_implementation]
+  effects -> primitives
+  effects -> foreign
 
   subgraph cluster_performance {
     label="Performance and Profiling"
-    mutable [label="How to transform mutable data?\nUsing `Control.Monad.ST` and `Data.IORef`."]
-    habits [label="How to write fast code?\nDeveloping good habits."]
-    seq [label="How to control laziness?\nUsing `seq` and `BangPatterns`."]
-    parallel [label="How to employ multiple cores?\nWorking with parallel algorithms."]
-    prof [label="How to find and eliminate performance problems?\nProducing wrong results faster."]
+    mutable [label="How to write imperative programs?\nUsing mutable variables."]
+    evaluation [label="When does evaluation happen?\nUnderstanding laziness and strictness annotations."]
+    rewriting [label="How to use rewrite rules?\nUsing laws to improve performance."]
+    parallel [label="How to employ multiple cores?\nWriting programs that run in parallel."]
+    profiling [label="How to diagnose performance problems?\nProfiling and optimizing programs."]
   }
 
-  subgraph cluster_topical {
-    label="Staying on Topic"
-    lc
-    [label="What is lambda calculus?\nConstructing a minimal programming language."]
-    stlc [label="How about typed lambda calculus?\nFitting simple types into a simple theory."]
-    hm [label="Can we make the typed lambda calculus stronger?\nBuilding the Hindley--Milner type system."]
-    functors
-    [label="What are functors?\nUnderstanding and using `Data.Functor` and friends."]
-    applicatives
-    [label="What are applicative functors?\nUnderstanding and using `Control.Applicative` and friends."]
-    monads
-    [label="What are monads?\nUnderstanding and using `Control.Monad` and friends."]
-    mt
-    [label="What are monad transformers?\nLooking at `Control.Monad.Trans`."]
-    free
-    [label="What are free monads?\nUnderstanding and using `Control.Monad.Free`."]
-    traversals [label="What are traversals?\nUnderstanding and using `Data.Foldable` and `Data.Traversable`."]
-    monoids [label="What are monoids?\nUnderstanding and using `Data.Monoid`."]
-    lenses [label="What are lenses?\nUnderstanding and using `Control.Lens`."]
-    arrows [label="What are arrows?\nUnderstanding and using `Control.Arrow` and `Control.Category`."]
+  monads -> mutable [lhead=cluster_performance]
+  evaluation -> profiling
+
+  subgraph cluster_tools {
+    label="Tools and Automation"
+    exfer [label="How to infer code from types?\nGenerating code with `djinn` and `exference`."]
+    refactor [label="How to simplify complicated expressions?\nUsing `pointfree` and `pointful` for refactoring."]
+    ux [label="How to improve the user experience?\nConfiguring and customizing `ghc` and `vim`."]
   }
+
+  types -> exfer [lhead=cluster_tools]
 
   subgraph cluster_tricks {
-    label="Type System Tricks"
-    composition [label="How to reason about function composition?\nMaking sense of expressions without a variable in sight."]
-    extensions [label="Is there more to the type system?\nUsing language extensions to enhance the type system."]
-    cont [label="How to add jumps into control flow?\nLooking at `Control.Monad.Cont`."]
-    printf [label="How to define functions with variable arity?\nLooking at `Text.Printf`."]
-    unsafe [label="What is considered unsafe?\nUsing `System.IO.Unsafe` correctly."]
-    schemes [label="What are recursion schemes?\nAbstracting away control flow itself."]
+    label="Party Tricks"
+    unsafe [label="How to play with fire?\nAbusing unsafe side effects."]
+    arity [label="How to define functions with variable arity?\nImplementing the classic `printf`."]
+    continuations [label="How to time travel?\nPlaying with continuations."]
+    composition [label="How to reason about function composition?\nDrawing pictures to infer types."]
   }
 
-  /*
-  subgraph cluster_theory {
-    label="Type Theory (Not on This Course)"
-    cardinal [label="Why calculate type inhabitants?\nPutting cardinal space into good use."]
-    dependent [label="Is there more to types?\nThinking about linear and dependent types."]
-    proofs [label="How to prove and check theorems?\nWorking with Coq."]
-    foundations [label="How deep does it go?\nGetting lost in axiomatic systems of mathematical foundations."]
-  }
-  */
+  effects -> unsafe [lhead=cluster_tricks]
+  classes -> arity [lhead=cluster_tricks]
+  monads -> continuations [lhead=cluster_tricks]
 
-  subgraph cluster_skills {
-    label="Small Survey of Skills"
-    hsm [label="I am comfortable with highschool mathematics."]
-    fp [label="I have used more than one functional programming language."]
-    c [label="I can read C programs."]
-    assembly [label="I can read assembly programs."]
-    algebra [label="I know abstract algebra."]
-    logic [label="I know formal logic."]
-  }
-
-  lc -> stlc
-  stlc -> hm
-  applicatives -> parsec
-  monads -> arrows
-  monads -> io
-  monads -> servant
-  traversals -> flow
-  extensions -> ghc
-  concurrent -> parallel
-  concurrent -> repa
-  flow -> repa
-  habits -> prof
-  seq -> prof
-  composition -> pointfree
-  prim -> prof
-  prim -> core
+  graph [bgcolor=black]
 }

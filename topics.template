@@ -1,9 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type" />
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 <title>Topics</title>
-
 <script type="text/javascript">
 <?php
 #ifdef DEBUG
@@ -213,7 +212,7 @@ script("topics.data", "topics.users");
             a.addEventListener("refill", function () {
               for (var k = 0; k < ps.length; ++k)
                 (function (p) {
-                  p.setAttribute("fill", c.checked ? "#306030" : "#102010");
+                  p.setAttribute("fill", c.checked ? "#306030" : "#204020");
 
                   /* These special effects are unnecessary. */
                   if (p.getAttribute("class") !== "clone") {

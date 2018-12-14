@@ -1,12 +1,21 @@
 digraph topics {
-  graph [bgcolor="#102010", color=white, fillcolor="#102010", fontcolor=white, style=filled]
-  node [color=white, fillcolor="#204020", fontcolor=white, style=filled]
-  node [fillcolor=black]
-  edge [color="#408040", fontcolor=white]
+  // Here `bgcolor` sets the canvas background color,
+  // `fillcolor` sets the cluster background color,
+  // `fontcolor` sets the canvas and cluster label text color and
+  // `color` sets the cluster border color.
+  graph [bgcolor=whitesmoke, color=midnightblue, fillcolor=darkslateblue, fontcolor=snow, style=filled]
+  // Here `fillcolor` sets the node background color,
+  // `fontcolor` sets the node label text color and
+  // `color` sets the node border color.
+  node [color=gainsboro, fillcolor=lightgray, fontcolor=darkslategray, style=filled]
+  // node [color=orangered, fillcolor=tomato, fontcolor=ghostwhite, style=filled]
+  // Here `color` sets the arrow color and
+  // `fontcolor` sets the arrow label text color.
+  edge [color=indianred, fontcolor=coral]
 
   graph [compound=true, splines=ortho, rankdir=LR]
   node [shape=box]
-  edge []
+  edge [dir=forward]
 
   subgraph cluster_concepts {
     label="Basic Concepts"
@@ -62,7 +71,7 @@ digraph topics {
     induction [label="How to reason about recursive types?\nDeriving induction principles for arbitrary types."]
     totality [label="What are total languages?\nSolving a special case of the halting problem."]
     erasure [label="How to perform type erasure?\nGetting rid of type information during compilation."]
-    categories [label="What is the point of category theory?\nGeneralizing types and functions to objects and morphisms."]
+    categories [label="What is the idea behind category theory?\nGeneralizing types and functions to objects and morphisms."]
   }
 
   types -> algebra [lhead=cluster_theory]
@@ -140,6 +149,4 @@ digraph topics {
   effects -> unsafe [lhead=cluster_tricks]
   classes -> arity [lhead=cluster_tricks]
   monads -> continuations [lhead=cluster_tricks]
-
-  graph [bgcolor=black]
 }

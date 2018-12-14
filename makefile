@@ -15,8 +15,8 @@ CPPFLAGS=-C -E -P -nostdinc -w -xc \
 match=^\(^\s*\)\(\w\+\)\s*\[\s*label\s*=\s*"\(.*\)"\s*\]$$
 svg=\1\2 [id="\2", label="{ ?? \| \3 }", shape=record]
 map=\1\2 [URL="javascript:void 0;", id="\2", label="{ ?? \| \3 }", shape=record]
-set=<input name="\2" type="checkbox" value="checked" />
-bag=array_push($$GLOBALS["topics"], "\2");
+set=\1<input name="\2" type="checkbox" value="checked" />
+bag=\1array_push($$GLOBALS["topics"], "\2");
 
 build: topics.php
 

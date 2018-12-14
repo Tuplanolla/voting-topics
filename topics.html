@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
-<title>Topics</title>
+<title>Voting Topics</title>
 <script type="text/javascript">
 <?php
 #ifdef DEBUG
@@ -201,10 +201,10 @@ script("topics.data", "topics.users");
       var s = selections !== null ? selections[a.id] : null;
 
       var g = d.getElementById(a.id);
+      var ts = g.getElementsByTagName("text");
       var ps = g.getElementsByTagName("polygon");
 
-      var t = g.getElementsByTagName("text")[0];
-      t.innerHTML = totals[a.id].toString();
+      ts[0].innerHTML = totals[a.id].toString();
 
       var cs = document.getElementsByName(a.id);
       for (var j = 0; j < cs.length; ++j)
@@ -214,15 +214,13 @@ script("topics.data", "topics.users");
               c.checked = s;
 
             a.addEventListener("refill", function () {
+              for (var k = 0; k < ts.length; ++k)
+                (function (t) {
+                  t.setAttribute("fill", c.checked ? aliceblue : midnightblue);
+                })(ts[k]);
               for (var k = 0; k < ps.length; ++k)
                 (function (p) {
-                  p.setAttribute("stroke", c.checked ?
-                      aliceblue :
-                      midnightblue);
-
-                  p.setAttribute("fill", c.checked ?
-                      tomato :
-                      lightgray);
+                  p.setAttribute("fill", c.checked ? tomato : lightgray);
 
                   /** These special effects are unnecessary. */
                   if (p.getAttribute("class") !== "clone") {
@@ -254,38 +252,58 @@ script("topics.data", "topics.users");
 </script>
 </head>
 <body id="canvas" style="font-family: sans-serif; margin: 2ex;">
-<h1>Topics</h1>
-<p>Use this toy to vote on the topics you would like to study.</p>
-<h2>Instrucciones</h2>
-<p>Click on the nodes to select or unselect them.
+<div style="width: 40em;">
+<h1>Voting Topics</h1>
+<p>This voting system allows you
+to influence what topics are covered on the course.
+It works by collaboratively adding weights to a network,
+in which each node corresponds to a topic and
+each edge corresponds to a dependency between them.
+You can vote for as many topics as you like,
+but keep in mind that we cannot possibly cover them all
+in the span of one course.
+You can also ignore the dependencies between topics,
+although this may come back to haunt you later.</p>
+<h2>Terms of Use</h2>
+<p>Using this voting system is completely voluntary.
+If you do not wish to participate, you may leave this page now.
+Otherwise, you may proceed to follow the instructions given below.</p>
+<p>By participating, you allow us to track your network address,
+username and selection of topics along with the current time.
+If you are on the university network, this gives us enough information
+to uniquely identify the machine you are connected from.
+This identification is stored indefinitely on the university servers.</p>
+<p>By participating, you also promise
+to follow the usual rules of academic integrity.
+This includes, for example, not impersonating other people or
+attempting to comporomise the server for your trivial amusement.</p>
+<h2>Technical Instructions</h2>
+<p>Initially all the nodes in the network are unselected.
+You can click on them to select them or click on them again to unselect them.
 Once you are happy with your selection,
-enter your username and push <em>Save</em> to store it.
-If you want to edit your previous selection,
-you can either enter your username and push <em>Load</em> to fetch it or
-simply make a new one from scratch.
-All of your selections are kept, but only the latest one remains in effect.</p>
-<h2>Privacy Policy</h2>
-<p>Participating is voluntary.
-By participating, your username and selection of topics will be stored
-alongside the current time and
-your network address (including machine name, if on the university network).
-Any data will be saved in unencrypted form on a private university server and
-stored indefinitely.
-By participating, you also promise to only provide truthful information,
-as per usual academic integrity.</p>
-<p>Providing false information or impersonating other people is considered rude and
-as a consequence, you will get the stick.
-You do not want the stick.</p>
+enter your username in the text field and
+push the <em>Save</em> button to store the selection.
+After this step, the vote counters on all the nodes are updated publicly.</p>
+<p>If you want to edit your previous selection,
+you can enter your username in the text field and
+push the <em>Load</em> button to restore it.
+If you want to replace your previous selection with a completely new one,
+you can simply overwrite it by starting over from the beginning.</p>
+<p>Note that all of your selections are kept on the server,
+but only the latest one remains in effect.
+If you feel that your selection has gotten lost or corrupted,
+please contact the course staff.</p>
+</div>
 <form action="" method="post">
 <div style="display: none; z-index: 0;">
 #include "topics.csetx"
 </div>
-<h2>Username</h2>
+<h2>Identification</h2>
 <button type="submit" name="load" value="pushed">Load</button>
 <input type="text" name="username" value="" />
 <button type="submit" name="save" value="pushed">Save</button>
 </form>
-<h2>Potential Topics</h2>
+<h2>Selection</h2>
 <div style="position: relative;">
 <object data="topics.svg" id="digraph" style="left: 0; position: absolute; top: 0; z-index: 1;" type="image/svg+xml">
 SVG Object
